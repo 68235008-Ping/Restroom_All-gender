@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1F6F6B">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="สจล. All Gender">
+<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22%E0%B8%AA%E0%B8%88%E0%B8%A5.%20%E0%B8%AB%E0%B9%89%E0%B8%AD%E0%B8%87%E0%B8%99%E0%B9%89%E0%B8%B3%20All%20Gender%22%2C%22short_name%22%3A%22All%20Gender%22%2C%22display%22%3A%22standalone%22%2C%22start_url%22%3A%22.%22%2C%22theme_color%22%3A%22%231F6F6B%22%2C%22background_color%22%3A%22%23EDEAE3%22%7D">
+<title>สจล. — บันทึกการเข้าใช้ห้องน้ำ All Gender</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@500;600;700&family=Sarabun:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #EDEAE3;
+    --card: #F8F6F0;
+    --ink: #23231F;
+    --ink-soft: #6B675E;
+    --line: #DAD5C8;
+    --accent: #1F6F6B;
+    --accent-soft: #DCEAE7;
+    --accent-deep: #144B48;
+    --error: #A6483D;
+    --error-soft: #F3E1DE;
+    --success: #3F7D58;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1B1C19;
+      --card: #24261F;
+      --ink: #ECE9E1;
+      --ink-soft: #A6A296;
+      --line: #3A3B33;
+      --accent: #6FBCB4;
+      --accent-soft: #223634;
+      --accent-deep: #9FDCD4;
+      --error: #E0847A;
+      --error-soft: #3A2622;
+      --success: #7FC79A;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1B1C19;
+    --card: #24261F;
+    --ink: #ECE9E1;
+    --ink-soft: #A6A296;
+    --line: #3A3B33;
+    --accent: #6FBCB4;
+    --accent-soft: #223634;
+    --accent-deep: #9FDCD4;
+    --error: #E0847A;
+    --error-soft: #3A2622;
+    --success: #7FC79A;
+  }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100%;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Sarabun', system-ui, sans-serif;
+    display: flex;
+    justify-content: center;
+    padding: 32px 16px 48px;
+  }
+  .wrap { width: 100%; max-width: 480px; }
+
+  .signage {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 22px;
+  }
+  .signage .glyph {
+    width: 46px; height: 46px;
+    border-radius: 999px;
+    background: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .signage .glyph svg { width: 24px; height: 24px; }
+  .signage h1 {
+    font-family: 'Kanit', sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    margin: 0;
+    line-height: 1.25;
+  }
+  .signage p {
+    margin: 2px 0 0;
+    font-size: 13.5px;
+    color: var(--ink-soft);
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 26px 22px;
+  }
+
+  .field label {
+    display: block;
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 8px;
+  }
+  .field input {
+    width: 100%;
+    font-family: 'Kanit', sans-serif;
+    font-size: 22px;
+    letter-spacing: 0.06em;
+    font-weight: 500;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1.5px solid var(--line);
+    background: var(--bg);
+    color: var(--ink);
+    outline: none;
+    transition: border-color .15s ease;
+  }
+  .field input:focus { border-color: var(--accent); }
+  .field input::placeholder { color: var(--ink-soft); opacity: .55; letter-spacing: 0.02em; }
+
+  .hint {
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    margin-top: 7px;
+    min-height: 16px;
+  }
+  .hint.error { color: var(--error); }
+
+  .field-gap { margin-top: 20px; }
+
+  .gender-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .gender-opt {
+    padding: 9px 15px;
+    border-radius: 999px;
+    border: 1.5px solid var(--line);
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Sarabun', sans-serif;
+    font-size: 13.5px;
+    cursor: pointer;
+    transition: border-color .15s ease, background .15s ease, color .15s ease;
+  }
+  .gender-opt:hover { border-color: var(--accent); }
+  .gender-opt.selected {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+  .gender-other {
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1.5px solid var(--line);
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Sarabun', sans-serif;
+    font-size: 14px;
+    outline: none;
+  }
+  .gender-other:focus { border-color: var(--accent); }
+
+  .rating-grid {
+    display: flex;
+    gap: 8px;
+  }
+  .rating-opt {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 10px 4px 8px;
+    border-radius: 14px;
+    border: 1.5px solid var(--line);
+    background: var(--bg);
+    cursor: pointer;
+    transition: border-color .15s ease, background .15s ease, transform .08s ease;
+  }
+  .rating-opt .face {
+    font-size: 24px;
+    line-height: 1;
+    filter: grayscale(65%);
+    opacity: .8;
+    transition: filter .15s ease, opacity .15s ease, transform .15s ease;
+  }
+  .rating-opt .rlabel {
+    font-size: 10.5px;
+    color: var(--ink-soft);
+  }
+  .rating-opt:hover { border-color: var(--accent); }
+  .rating-opt:active { transform: scale(0.95); }
+  .rating-opt.selected {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+  .rating-opt.selected .face {
+    filter: none;
+    opacity: 1;
+    transform: scale(1.15);
+  }
+  .rating-opt.selected .rlabel {
+    color: var(--accent-deep);
+    font-weight: 500;
+  }
+
+  textarea#feedback {
+    width: 100%;
+    min-height: 70px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1.5px solid var(--line);
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Sarabun', sans-serif;
+    font-size: 14.5px;
+    resize: vertical;
+    outline: none;
+    transition: border-color .15s ease;
+  }
+  textarea#feedback:focus { border-color: var(--accent); }
+  textarea#feedback::placeholder { color: var(--ink-soft); opacity: .65; }
+
+  button.submit {
+    width: 100%;
+    margin-top: 16px;
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    background: var(--accent);
+    color: #fff;
+    font-family: 'Kanit', sans-serif;
+    font-size: 16.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .15s ease, transform .08s ease;
+  }
+  button.submit:hover { background: var(--accent-deep); }
+  button.submit:active { transform: scale(0.985); }
+  button.submit:disabled { opacity: .55; cursor: not-allowed; }
+
+  .toast {
+    margin-top: 14px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    font-size: 14px;
+    display: none;
+    align-items: center;
+    gap: 8px;
+  }
+  .toast.show { display: flex; }
+  .toast.ok { background: var(--accent-soft); color: var(--accent-deep); }
+  .toast.bad { background: var(--error-soft); color: var(--error); }
+
+  .stats {
+    display: flex;
+    gap: 12px;
+    margin-top: 22px;
+  }
+  .stat {
+    flex: 1;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 16px 18px;
+  }
+  .stat .num {
+    font-family: 'Kanit', sans-serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--accent-deep);
+    line-height: 1;
+  }
+  .stat .label {
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    margin-top: 6px;
+  }
+
+  .log {
+    margin-top: 22px;
+  }
+  .log summary {
+    cursor: pointer;
+    font-size: 14.5px;
+    font-weight: 500;
+    color: var(--ink);
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 2px;
+  }
+  .log summary::-webkit-details-marker { display: none; }
+  .log summary .chev { transition: transform .15s ease; color: var(--ink-soft); }
+  .log[open] summary .chev { transform: rotate(180deg); }
+
+  .log-list {
+    margin-top: 12px;
+    border-top: 1px solid var(--line);
+    max-height: 320px;
+    overflow-y: auto;
+  }
+  .log-row {
+    padding: 11px 2px;
+    border-bottom: 1px solid var(--line);
+    font-size: 14px;
+  }
+  .log-row .row-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .log-row .id { font-family: 'Kanit', sans-serif; letter-spacing: 0.03em; }
+  .log-row .time { color: var(--ink-soft); font-size: 12.5px; white-space: nowrap; margin-left: 10px; }
+  .log-row .tag {
+    display: inline-block;
+    margin-top: 5px;
+    padding: 2px 9px;
+    border-radius: 999px;
+    background: var(--accent-soft);
+    color: var(--accent-deep);
+    font-size: 11.5px;
+  }
+  .log-row .fb {
+    margin-top: 6px;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    line-height: 1.4;
+  }
+  .log-empty { padding: 18px 2px; color: var(--ink-soft); font-size: 13.5px; text-align: center; }
+
+  .offline-note {
+    margin-top: 16px;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="signage">
+    <div class="glyph">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="7" r="3.2"></circle>
+        <path d="M8 21v-6.5a4 4 0 0 1 4-4h0a4 4 0 0 1 4 4V21"></path>
+      </svg>
+    </div>
+    <div>
+      <h1>สถาบันเทคโนโลยีพระจอมเกล้าเจ้าคุณทหารลาดกระบัง</h1>
+      <p>ห้องน้ำ All Gender — บันทึกการเข้าใช้บริการ</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <form id="checkinForm" novalidate>
+      <div class="field">
+        <label for="studentId">รหัสนักศึกษา</label>
+        <input
+          id="studentId"
+          name="studentId"
+          type="text"
+          inputmode="numeric"
+          autocomplete="off"
+          placeholder="66xxxxxx"
+          maxlength="8"
+        >
+        <div class="hint" id="hint">กรอกรหัสนักศึกษา 8 หลัก ขึ้นต้นด้วย 66–69</div>
+      </div>
+
+      <div class="field field-gap">
+        <label>เพศ (ถ้าต้องการระบุ)</label>
+        <div class="gender-grid" id="genderGrid">
+          <button type="button" class="gender-opt" data-value="ชาย">ชาย</button>
+          <button type="button" class="gender-opt" data-value="หญิง">หญิง</button>
+          <button type="button" class="gender-opt" data-value="LGBTQ+">LGBTQ+</button>
+          <button type="button" class="gender-opt" data-value="อื่นๆ">อื่นๆ</button>
+          <button type="button" class="gender-opt selected" data-value="ไม่ระบุ">ไม่ระบุ</button>
+        </div>
+        <input type="text" id="genderOther" class="gender-other" placeholder="ระบุเพศ" style="display:none;">
+      </div>
+
+      <div class="field field-gap">
+        <label>ให้คะแนนความพึงพอใจ (ถ้าต้องการ)</label>
+        <div class="rating-grid" id="ratingGrid">
+          <button type="button" class="rating-opt" data-value="5" aria-label="ดีมาก">
+            <span class="face">😄</span><span class="rlabel">ดีมาก</span>
+          </button>
+          <button type="button" class="rating-opt" data-value="4" aria-label="ดี">
+            <span class="face">🙂</span><span class="rlabel">ดี</span>
+          </button>
+          <button type="button" class="rating-opt" data-value="3" aria-label="พอใช้">
+            <span class="face">😐</span><span class="rlabel">พอใช้</span>
+          </button>
+          <button type="button" class="rating-opt" data-value="2" aria-label="แย่">
+            <span class="face">🙁</span><span class="rlabel">แย่</span>
+          </button>
+          <button type="button" class="rating-opt" data-value="1" aria-label="แย่มาก">
+            <span class="face">😞</span><span class="rlabel">แย่มาก</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="field field-gap">
+        <label for="feedback">ข้อเสนอแนะหลังใช้บริการ (ถ้ามี)</label>
+        <textarea id="feedback" placeholder="เช่น ห้องน้ำสะอาดดี, กระดาษหมด, สบู่หมด, ก๊อกน้ำเสีย ฯลฯ" maxlength="500"></textarea>
+      </div>
+
+      <button type="submit" class="submit" id="submitBtn">บันทึกการเข้าใช้</button>
+      <div class="toast" id="toast"></div>
+    </form>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="num" id="todayCount">–</div>
+      <div class="label">ผู้ใช้บริการวันนี้</div>
+    </div>
+    <div class="stat">
+      <div class="num" id="totalCount">–</div>
+      <div class="label">รวมทั้งหมดที่บันทึกไว้</div>
+    </div>
+  </div>
+
+  <details class="log" id="logDetails">
+    <summary>
+      <span>ประวัติการเข้าใช้ล่าสุด</span>
+      <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </summary>
+    <div class="log-list" id="logList">
+      <div class="log-empty">กำลังโหลด…</div>
+    </div>
+  </details>
+
+  <div class="offline-note" id="offlineNote" style="display:none;">
+    ระบบยังไม่สามารถเชื่อมต่อพื้นที่จัดเก็บส่วนกลางได้ ข้อมูลด้านล่างจะถูกเก็บไว้ในเครื่องนี้เท่านั้น
+  </div>
+
+</div>
+
+<script>
+(function () {
+  var ID_PATTERN = /^(66|67|68|69)\d{6}$/;
+
+  var form = document.getElementById('checkinForm');
+  var input = document.getElementById('studentId');
+  var hint = document.getElementById('hint');
+  var submitBtn = document.getElementById('submitBtn');
+  var toast = document.getElementById('toast');
+  var todayCountEl = document.getElementById('todayCount');
+  var totalCountEl = document.getElementById('totalCount');
+  var logList = document.getElementById('logList');
+  var offlineNote = document.getElementById('offlineNote');
+  var genderGrid = document.getElementById('genderGrid');
+  var genderOtherInput = document.getElementById('genderOther');
+  var feedbackInput = document.getElementById('feedback');
+  var ratingGrid = document.getElementById('ratingGrid');
+  var selectedGender = 'ไม่ระบุ';
+  var selectedRating = null;
+
+  ratingGrid.addEventListener('click', function (ev) {
+    var btn = ev.target.closest('.rating-opt');
+    if (!btn) return;
+    var value = btn.getAttribute('data-value');
+    var already = btn.classList.contains('selected');
+    Array.prototype.forEach.call(ratingGrid.querySelectorAll('.rating-opt'), function (b) {
+      b.classList.remove('selected');
+    });
+    if (already) {
+      selectedRating = null; // tap again to clear
+    } else {
+      btn.classList.add('selected');
+      selectedRating = Number(value);
+    }
+  });
+
+  genderGrid.addEventListener('click', function (ev) {
+    var btn = ev.target.closest('.gender-opt');
+    if (!btn) return;
+    Array.prototype.forEach.call(genderGrid.querySelectorAll('.gender-opt'), function (b) {
+      b.classList.remove('selected');
+    });
+    btn.classList.add('selected');
+    selectedGender = btn.getAttribute('data-value');
+    if (selectedGender === 'อื่นๆ') {
+      genderOtherInput.style.display = 'block';
+      genderOtherInput.focus();
+    } else {
+      genderOtherInput.style.display = 'none';
+      genderOtherInput.value = '';
+    }
+  });
+
+  var mode = 'pending'; // 'db' | 'local'
+  var dbRef = null;
+  var entriesCol = null;
+
+  function isSameDay(ts, ref) {
+    var a = new Date(ts), b = ref;
+    return a.getFullYear() === b.getFullYear() &&
+      a.getMonth() === b.getMonth() &&
+      a.getDate() === b.getDate();
+  }
+
+  function formatTime(ts) {
+    var d = new Date(ts);
+    var hh = String(d.getHours()).padStart(2, '0');
+    var mm = String(d.getMinutes()).padStart(2, '0');
+    var dd = String(d.getDate()).padStart(2, '0');
+    var mo = String(d.getMonth() + 1).padStart(2, '0');
+    return dd + '/' + mo + ' ' + hh + ':' + mm;
+  }
+
+  function renderEntries(entries) {
+    var now = new Date();
+    var todayCount = 0;
+    entries.forEach(function (e) { if (isSameDay(e.ts, now)) todayCount++; });
+    todayCountEl.textContent = todayCount;
+    totalCountEl.textContent = entries.length;
+
+    if (!entries.length) {
+      logList.innerHTML = '<div class="log-empty">ยังไม่มีการบันทึกการเข้าใช้</div>';
+      return;
+    }
+    var sorted = entries.slice().sort(function (a, b) { return b.ts - a.ts; });
+    var faceMap = { 5: '😄', 4: '🙂', 3: '😐', 2: '🙁', 1: '😞' };
+    logList.innerHTML = sorted.slice(0, 50).map(function (e) {
+      var tag = e.gender ? '<span class="tag">' + escapeHtml(e.gender) + '</span>' : '';
+      var face = e.rating && faceMap[e.rating]
+        ? '<span class="tag">' + faceMap[e.rating] + '</span>'
+        : '';
+      var fb = e.feedback ? '<div class="fb">“' + escapeHtml(e.feedback) + '”</div>' : '';
+      return '<div class="log-row">' +
+        '<div class="row-top"><span class="id">' + escapeHtml(e.studentId) +
+        '</span><span class="time">' + formatTime(e.ts) + '</span></div>' +
+        tag + face + fb + '</div>';
+    }).join('');
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function showToast(msg, kind) {
+    toast.textContent = msg;
+    toast.className = 'toast show ' + kind;
+    setTimeout(function () { toast.className = 'toast'; }, 2600);
+  }
+
+  // ---- local (per-device) fallback ----
+  var LOCAL_KEY = 'restroom_checkin_entries_v1';
+  function localGet() {
+    try {
+      var raw = localStorage.getItem(LOCAL_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch (e) { return []; }
+  }
+  function localSet(entries) {
+    try { localStorage.setItem(LOCAL_KEY, JSON.stringify(entries)); } catch (e) {}
+  }
+  function initLocalMode() {
+    mode = 'local';
+    offlineNote.style.display = 'block';
+    renderEntries(localGet());
+  }
+  function addLocal(studentId, gender, feedback, rating) {
+    var entries = localGet();
+    entries.push({ studentId: studentId, gender: gender, feedback: feedback, rating: rating, ts: Date.now() });
+    localSet(entries);
+    renderEntries(entries);
+  }
+
+  // ---- shared db mode ----
+  function initDbMode(db) {
+    mode = 'db';
+    dbRef = db;
+    entriesCol = db.collection('entries');
+    entriesCol.orderBy('ts', 'desc').limit(200).onSnapshot(
+      function (snap) {
+        var entries = snap.docs.map(function (d) {
+          var data = d.data() || {};
+          return {
+            studentId: data.studentId || '',
+            gender: data.gender || '',
+            feedback: data.feedback || '',
+            rating: typeof data.rating === 'number' ? data.rating : null,
+            ts: data.ts || 0
+          };
+        });
+        renderEntries(entries);
+      },
+      function (err) {
+        console.error('db subscribe error', err);
+        initLocalMode();
+      }
+    );
+  }
+
+  async function addEntry(studentId, gender, feedback, rating) {
+    if (mode === 'db' && entriesCol) {
+      await entriesCol.add({ studentId: studentId, gender: gender, feedback: feedback, rating: rating, ts: Date.now() });
+    } else {
+      addLocal(studentId, gender, feedback, rating);
+    }
+  }
+
+  function validate(value) {
+    return ID_PATTERN.test(value);
+  }
+
+  input.addEventListener('input', function () {
+    input.value = input.value.replace(/\D/g, '').slice(0, 8);
+    if (!input.value) {
+      hint.textContent = 'กรอกรหัสนักศึกษา 8 หลัก ขึ้นต้นด้วย 66–69';
+      hint.className = 'hint';
+    } else if (validate(input.value)) {
+      hint.textContent = 'รูปแบบถูกต้อง';
+      hint.className = 'hint';
+    } else {
+      hint.textContent = 'รูปแบบไม่ถูกต้อง ต้องเป็นตัวเลข 8 หลัก ขึ้นต้นด้วย 66, 67, 68 หรือ 69';
+      hint.className = 'hint error';
+    }
+  });
+
+  form.addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    var value = input.value.trim();
+    if (!validate(value)) {
+      hint.textContent = 'รูปแบบไม่ถูกต้อง ต้องเป็นตัวเลข 8 หลัก ขึ้นต้นด้วย 66, 67, 68 หรือ 69';
+      hint.className = 'hint error';
+      input.focus();
+      return;
+    }
+    var genderValue = selectedGender === 'อื่นๆ'
+      ? (genderOtherInput.value.trim() || 'อื่นๆ')
+      : selectedGender;
+    var feedbackValue = feedbackInput.value.trim();
+    var ratingValue = selectedRating;
+
+    submitBtn.disabled = true;
+    addEntry(value, genderValue, feedbackValue, ratingValue).then(function () {
+      showToast('บันทึกการเข้าใช้เรียบร้อย', 'ok');
+      input.value = '';
+      feedbackInput.value = '';
+      selectedGender = 'ไม่ระบุ';
+      selectedRating = null;
+      genderOtherInput.style.display = 'none';
+      genderOtherInput.value = '';
+      Array.prototype.forEach.call(genderGrid.querySelectorAll('.gender-opt'), function (b) {
+        b.classList.toggle('selected', b.getAttribute('data-value') === 'ไม่ระบุ');
+      });
+      Array.prototype.forEach.call(ratingGrid.querySelectorAll('.rating-opt'), function (b) {
+        b.classList.remove('selected');
+      });
+      hint.textContent = 'กรอกรหัสนักศึกษา 8 หลัก ขึ้นต้นด้วย 66–69';
+      hint.className = 'hint';
+    }).catch(function (err) {
+      console.error(err);
+      showToast('บันทึกไม่สำเร็จ ลองอีกครั้ง', 'bad');
+    }).finally(function () {
+      submitBtn.disabled = false;
+      input.focus();
+    });
+  });
+
+  // init: try db capability, else fall back to local
+  (async function init() {
+    try {
+      if (window.claude && typeof window.claude.use === 'function') {
+        var db = await window.claude.use('db');
+        if (db) {
+          initDbMode(db);
+          return;
+        }
+      }
+    } catch (e) {
+      console.error('db capability init failed', e);
+    }
+    initLocalMode();
+  })();
+})();
+</script>
+</body>
+</html>
